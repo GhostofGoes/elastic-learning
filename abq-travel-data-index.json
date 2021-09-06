@@ -1,0 +1,39 @@
+{
+    "settings": {
+
+    },
+    "mappings": {
+        "properties": {
+            "department_division": {
+                "type": "text"
+            },
+            "traveler_name": {
+                "type": "text"
+            },
+            "destination": {
+                "type": "text"
+            },
+            "country": {
+                "type": "text"
+            },
+            "date_leaving": {
+                "type": "text"
+            },
+            "return_date": {
+                "type": "text"
+            },
+            "description": {
+                "type": "text"
+            },
+            "business_purpose": {
+                "type": "text"
+            },
+            "estimated_total": {
+                "type": "float"
+            },
+            "actual_total": {
+                "type": "float"
+            }
+        }
+    }
+}

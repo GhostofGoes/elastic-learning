@@ -1,0 +1,102 @@
+# 1 ES dedicated master node, 2 ES data nodes, 1 Kibana instance - (v7.13.4)
+# The two data nodes support a hot/warm architecture
+#
+# NOTE: the volumes persist even when containers are removed (e.g. "docker-compose down")
+# To clean them up, run "docker volume prune"
+
+version: '3'
+
+services:
+  master:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    container_name: master
+    environment:
+      - cluster.name=learning-cluster
+      - cluster.initial_master_nodes=master
+      - node.name=master
+      - node.roles=master
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - xpack.license.self_generated.type=basic
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - master-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elastic-net
+  datanode-europe:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    container_name: datanode-europe
+    environment:
+      - cluster.name=learning-cluster
+      - cluster.initial_master_nodes=master
+      - discovery.seed_hosts=master
+      - node.name=datanode-europe
+      - node.roles=data
+      - node.attr.my_zone=europe
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - xpack.license.self_generated.type=basic
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - datanode-europe-data:/usr/share/elasticsearch/data
+    networks:
+      - elastic-net
+  datanode-asia:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    container_name: datanode-asia
+    environment:
+      - cluster.name=learning-cluster
+      - cluster.initial_master_nodes=master
+      - discovery.seed_hosts=master
+      - node.name=datanode-asia
+      - node.roles=data
+      - node.attr.my_zone=asia
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - xpack.license.self_generated.type=basic
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - datanode-asia-data:/usr/share/elasticsearch/data
+    networks:
+      - elastic-net
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.13.4
+    container_name: kibana
+    environment:
+      - elasticsearch.url=http://elasticsearch:9200
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 5601:5601
+    networks:
+      - elastic-net
+    links:
+      - datanode-europe:elasticsearch
+
+volumes:
+  master-data:
+    driver: local
+  datanode-europe-data:
+    driver: local
+  datanode-asia-data:
+    driver: local
+
+networks:
+  elastic-net:

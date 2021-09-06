@@ -1,0 +1,75 @@
+{
+    "settings": {
+        "number_of_shards": 2
+    },
+    "mappings": {
+        "properties": {
+            "arrest": {
+                "type": "text"
+            },
+            "beat": {
+                "type": "keyword"
+            },
+            "block": {
+                "type": "text"
+            },
+            "case_number": {
+                "type": "text"
+            },
+            "community_area": {
+                "type": "keyword"
+            },
+            "date": {
+                "type": "text"
+            },
+            "description": {
+                "type": "text"
+            },
+            "district": {
+                "type": "keyword"
+            },
+            "domestic": {
+                "type": "boolean"
+            },
+            "fbi_code": {
+                "type": "keyword"
+            },
+            "id": {
+                "type": "long"
+            },
+            "iucr": {
+                "type": "keyword"
+            },
+            "latitude": {
+                "type": "float"
+            },
+            "location": {
+                "type": "keyword"
+            },
+            "location_description": {
+                "type": "text"
+            },
+            "longitude": {
+                "type": "float"
+            },
+            "primary_type": {
+                "type": "keyword"
+            },
+            "updated_on": {
+                "type": "text"
+            },
+            "ward": {
+                "type": "keyword"
+            },
+            "x_coordinate": {
+                "type": "long"
+            },
+            "y_coordinate": {
+                "type": "long"
+            },
+            "year": {
+                "type": "long"
+            }
+        }
+    }
+}
