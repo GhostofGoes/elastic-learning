@@ -29,7 +29,7 @@
                 "type": "keyword"
             },
             "domestic": {
-                "type": "boolean"
+                "type": "keyword"
             },
             "fbi_code": {
                 "type": "keyword"
