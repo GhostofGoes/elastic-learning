@@ -1,35 +1,54 @@
 {
     "settings": {
-        "number_of_shards": 2
+        "number_of_shards": 1,
+        "number_of_replicas": 1
     },
     "mappings": {
         "properties": {
+            "@timestamp": {
+                "type": "alias",
+                "path": "date"
+            },
             "arrest": {
-                "type": "text"
+                "type": "boolean"
             },
             "beat": {
                 "type": "keyword"
             },
             "block": {
-                "type": "text"
+                "type": "keyword",
+                "fields": {
+                    "text": {
+                        "type": "text",
+                        "analyzer": "english"
+                    }
+                }
             },
             "case_number": {
-                "type": "text"
+                "type": "keyword"
             },
             "community_area": {
                 "type": "keyword"
             },
             "date": {
-                "type": "text"
+              "type": "date",
+              "format": "MM/dd/yyyy hh:mm:ss a"
             },
             "description": {
-                "type": "text"
+                "type": "text",
+                "analyzer": "english",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
             },
             "district": {
                 "type": "keyword"
             },
             "domestic": {
-                "type": "keyword"
+                "type": "boolean"
             },
             "fbi_code": {
                 "type": "keyword"
@@ -47,28 +66,41 @@
                 "type": "keyword"
             },
             "location_description": {
-                "type": "text"
+                "type": "keyword",
+                "fields": {
+                    "text": {
+                        "type": "text",
+                        "analyzer": "english"
+                    }
+                }
             },
             "longitude": {
                 "type": "float"
             },
             "primary_type": {
-                "type": "keyword"
+                "type": "keyword",
+                "fields": {
+                    "text": {
+                        "type": "text",
+                        "analyzer": "english"
+                    }
+                }
             },
             "updated_on": {
-                "type": "text"
+                "type": "date",
+                "format": "MM/dd/yyyy hh:mm:ss a"
             },
             "ward": {
                 "type": "keyword"
             },
             "x_coordinate": {
-                "type": "long"
+                "type": "integer"
             },
             "y_coordinate": {
-                "type": "long"
+                "type": "integer"
             },
             "year": {
-                "type": "long"
+                "type": "short"
             }
         }
     }
