@@ -48,3 +48,6 @@ py -3.7 .\csv_to_elastic.py --index abq-travel-data --encoding utf-16-le TravelS
 - Guido Lena Cota (@glenacota) (https://github.com/glenacota/elastic-training-repo): used his Docker Compose files as a template for this project, as well as the Shakespeare dataset.
 - City of Albuquerque's ABQ Data project: https://www.cabq.gov/abq-data/
 - City of Chicago's datasets
+
+# License
+MIT license, like almost all of my projects. I believe in getting work done and improving the lives of people, and a lot of those people work in real jobs in the real world. GPL...just makes life harder.
