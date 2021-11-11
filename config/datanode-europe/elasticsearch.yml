@@ -1,0 +1,22 @@
+cluster.name: learning-cluster
+cluster.initial_master_nodes: master
+
+discovery.seed_hosts: master
+
+node.name: datanode-europe
+node.roles: data
+node.attr.my_zone: europe
+
+network.host: 0.0.0.0
+
+http.host: 0.0.0.0
+http.port: 9200
+
+transport.host: 0.0.0.0
+transport.tcp.port: 9300
+
+xpack.security.enabled: false
+
+bootstrap.memory_lock: true
+
+xpack.license.self_generated.type: basic

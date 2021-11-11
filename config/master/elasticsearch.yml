@@ -1,0 +1,19 @@
+cluster.name: learning-cluster
+cluster.initial_master_nodes: master
+
+node.name: master
+node.roles: master
+
+network.host: 0.0.0.0
+
+http.host: 0.0.0.0
+http.port: 9200
+
+transport.host: 0.0.0.0
+transport.tcp.port: 9300
+
+xpack.security.enabled: false
+
+bootstrap.memory_lock: true
+
+xpack.license.self_generated.type: basic

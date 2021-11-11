@@ -4,6 +4,19 @@
 # NOTE: the volumes persist even when containers are removed (e.g. "docker-compose down")
 # To clean them up, run "docker volume prune"
 
+# Exam as of July 2021 uses Elastic Stack 7.13.4
+
+# TODOs:
+#  - configure monitoring
+#  - Add a monitoring cluster
+#  - add metricbeat for this cluster
+#  - add filebeat for this cluster
+#  - Enable security, so Roles and Users can be configured from Kibana for practice
+#  - Mount a log4j2.properties file to one of the data nodes (as an example/ability to play with)
+#  - Mount a jvm.options file to one of the data nodes (as an example/ability to play with)
+#  - Add path.repo to configuration and add a volume mount for snapshots
+#  - Add a second "remote cluster" to practice CCS/CCR
+
 version: '3'
 
 services:
@@ -11,13 +24,6 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
     container_name: master
     environment:
-      - cluster.name=learning-cluster
-      - cluster.initial_master_nodes=master
-      - node.name=master
-      - node.roles=master
-      - xpack.security.enabled=false
-      - bootstrap.memory_lock=true
-      - xpack.license.self_generated.type=basic
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ulimits:
       memlock:
@@ -25,6 +31,7 @@ services:
         hard: -1
     volumes:
       - master-data:/usr/share/elasticsearch/data
+      - ./config/master/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
       - 9200:9200
     networks:
@@ -33,15 +40,6 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
     container_name: datanode-europe
     environment:
-      - cluster.name=learning-cluster
-      - cluster.initial_master_nodes=master
-      - discovery.seed_hosts=master
-      - node.name=datanode-europe
-      - node.roles=data
-      - node.attr.my_zone=europe
-      - xpack.security.enabled=false
-      - bootstrap.memory_lock=true
-      - xpack.license.self_generated.type=basic
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ulimits:
       memlock:
@@ -49,12 +47,14 @@ services:
         hard: -1
     volumes:
       - datanode-europe-data:/usr/share/elasticsearch/data
+      - ./config/datanode-europe/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     networks:
       - elastic-net
   datanode-asia:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
     container_name: datanode-asia
-    environment:
+    environment:  
+      # Leave config for this node as environment variables as an example
       - cluster.name=learning-cluster
       - cluster.initial_master_nodes=master
       - discovery.seed_hosts=master
@@ -71,18 +71,43 @@ services:
         hard: -1
     volumes:
       - datanode-asia-data:/usr/share/elasticsearch/data
+      # NOTE: no config file here so there is an example of 
+      # configuring a node using environment variables.
+    networks:
+      - elastic-net
+  ingestnode:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    container_name: ingestnode
+    environment:  
+      # Leave as environment variables as an example
+      - cluster.name=learning-cluster
+      - cluster.initial_master_nodes=master
+      - discovery.seed_hosts=master
+      - node.name=ingestnode
+      - node.roles=ingest
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - xpack.license.self_generated.type=basic
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ingestnode-data:/usr/share/elasticsearch/data
+      # NOTE: no config file here so there is an example of 
+      # configuring a node using environment variables.
     networks:
       - elastic-net
   kibana:
     image: docker.elastic.co/kibana/kibana:7.13.4
     container_name: kibana
-    environment:
-      - elasticsearch.url=http://elasticsearch:9200
-      - xpack.security.enabled=false
     ulimits:
       memlock:
         soft: -1
         hard: -1
+    volumes:
+      - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     ports:
       - 5601:5601
     networks:
@@ -96,6 +121,8 @@ volumes:
   datanode-europe-data:
     driver: local
   datanode-asia-data:
+    driver: local
+  ingestnode-data:
     driver: local
 
 networks:
