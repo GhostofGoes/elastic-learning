@@ -1,21 +1,30 @@
-# 1 ES dedicated master node, 2 ES data nodes, 1 Kibana instance - (v7.13.4)
+# Cluster environment to use to learn and practice for the Elastic Certified Engineer exam.
+#   This was originally based on "elastic-training-repo" by Guido Lena Cota (@glenacota): https://github.com/glenacota/elastic-training-repo
+#
+# This uses Elastic Stack 7.13.4
+#   The exam as of July 2021 uses Elastic Stack 7.13.4
+#
+# Nodes:
+#   1 master node, 
+#   2 data nodes
+#   1 ingest node
+#   1 Kibana instance
+#
 # The two data nodes support a hot/warm architecture
 #
 # NOTE: the volumes persist even when containers are removed (e.g. "docker-compose down")
 # To clean them up, run "docker volume prune"
-
-# Exam as of July 2021 uses Elastic Stack 7.13.4
-
+#
 # TODOs:
+#  - Mount a log4j2.properties file to one of the data nodes (as an example/ability to play with)
+#  - Mount a jvm.options file to one of the data nodes (as an example/ability to play with)
+#  - Add path.repo to configuration and add a volume mount for Snapshots
+#  - Add a second "remote cluster" to practice CCS/CCR (Cross-Cluster Search/Cross-Cluster Replication)
 #  - configure monitoring
 #  - Add a monitoring cluster
 #  - add metricbeat for this cluster
 #  - add filebeat for this cluster
 #  - Enable security, so Roles and Users can be configured from Kibana for practice
-#  - Mount a log4j2.properties file to one of the data nodes (as an example/ability to play with)
-#  - Mount a jvm.options file to one of the data nodes (as an example/ability to play with)
-#  - Add path.repo to configuration and add a volume mount for snapshots
-#  - Add a second "remote cluster" to practice CCS/CCR
 
 version: '3'
 
